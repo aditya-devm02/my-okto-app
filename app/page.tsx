@@ -6,11 +6,13 @@ import GetButton from "@/app/components/GetButton";
 import {getAccount, useOkto } from '@okto_web3/react-sdk';
 import ProductList from "@/app/components/ProductList";
 import Cart from "@/app/components/Cart";
+import { useRouter } from "next/router";
 
 export default function Home() {
     const { data: session } = useSession();
     const oktoClient = useOkto();
     const [cartItems, setCartItems] = useState([]);
+    const router = useRouter();
  
     //@ts-ignore
     const idToken = useMemo(() => (session ? session.id_token : null), [session]);
@@ -50,6 +52,11 @@ export default function Home() {
         setCartItems(cartItems.filter((_, i) => i !== index));
     };
 
+    const handleViewCart = () => {
+        localStorage.setItem("cartItems", JSON.stringify(cartItems));
+        router.push("/cart");
+    };
+
     return (
         <main className="flex min-h-screen flex-col items-center space-y-6 p-12 bg-violet-200">
             <div className="text-black font-bold text-3xl mb-8">E-commerce App</div>
@@ -60,6 +67,9 @@ export default function Home() {
                 <GetButton title="getAccount" apiFn={getAccount} />
             </div>
             <ProductList addToCart={addToCart} />
+            <button onClick={handleViewCart} className="mt-4 bg-green-500 text-white px-4 py-2">
+                View Cart
+            </button>
             <Cart cartItems={cartItems} removeFromCart={removeFromCart} />
         </main>
     );
