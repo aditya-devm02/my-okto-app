@@ -6,8 +6,7 @@ import GetButton from "@/app/components/GetButton";
 import { getAccount, useOkto } from '@okto_web3/react-sdk';
 import ProductList from "@/app/components/ProductList";
 import Cart from "@/app/components/Cart";
-import { useRouter } from "next/router";
-
+import { useRouter } from "next/navigation";
 export default function Home() {
     const { data: session } = useSession();
     const oktoClient = useOkto();
