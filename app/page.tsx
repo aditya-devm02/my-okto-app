@@ -4,7 +4,7 @@ import { useSession, signOut } from "next-auth/react";
 import { LoginButton } from "@/app/components/LoginButton";
 import GetButton from "@/app/components/GetButton";
 import { getAccount, useOkto } from '@okto_web3/react-sdk';
-import ProductList from "@/app/components/ProductList";
+import { products } from "@/app/data/products"; // Import products directly
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -53,13 +53,12 @@ export default function Home() {
     };
 
     const removeFromCart = (index) => {
-        setCartItems(cartItems.filter((_, i) => i !== index));
+        const updatedCartItems = cartItems.filter((_, i) => i !== index);
+        setCartItems(updatedCartItems);
+        localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
     };
 
-    const handleViewCart = () => {
-        localStorage.setItem("cartItems", JSON.stringify(cartItems));
-        router.push("/cart");
-    };
+    const total = cartItems.reduce((sum, item) => sum + item.price, 0);
 
     return (
         <main className="flex min-h-screen flex-col items-center space-y-6 p-12 bg-violet-200">
@@ -79,10 +78,44 @@ export default function Home() {
                 </div>
             )}
 
-            <ProductList addToCart={addToCart} />
-            <button onClick={handleViewCart} className="mt-4 bg-green-500 text-white px-4 py-2">
-                View Cart
-            </button>
+            {/* Product List */}
+            <div className="grid grid-cols-3 gap-4">
+                {products.map((product) => (
+                    <div key={product.id} className="border p-4">
+                        <img src={product.image} alt={product.name} className="w-full h-48 object-cover" />
+                        <h2 className="text-xl font-bold">{product.name}</h2>
+                        <p>{product.description}</p>
+                        <p className="text-lg font-semibold">${product.price}</p>
+                        <button
+                            onClick={() => addToCart(product)}
+                            className="mt-2 bg-blue-500 text-white px-4 py-2"
+                        >
+                            Add to Cart
+                        </button>
+                    </div>
+                ))}
+            </div>
+
+            {/* Cart Display */}
+            <div className="border p-4 mt-6 w-full">
+                <h2 className="text-2xl font-bold">Shopping Cart</h2>
+                {cartItems.length === 0 ? (
+                    <p>Your cart is empty</p>
+                ) : (
+                    <ul>
+                        {cartItems.map((item, index) => (
+                            <li key={index} className="flex justify-between">
+                                <span>{item.name}</span>
+                                <span>${item.price}</span>
+                                <button onClick={() => removeFromCart(index)} className="text-red-500">
+                                    Remove
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+                <p className="text-lg font-semibold">Total: ${total.toFixed(2)}</p>
+            </div>
         </main>
     );
 }
