@@ -44,7 +44,9 @@ export default function Home() {
     }, [idToken]);
 
     const addToCart = (product) => {
-        setCartItems([...cartItems, product]);
+        const updatedCartItems = [...cartItems, product];
+        setCartItems(updatedCartItems);
+        localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
     };
 
     const removeFromCart = (index) => {
