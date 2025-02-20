@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { LoginButton } from "@/app/components/LoginButton";
 import GetButton from "@/app/components/GetButton";
-import {getAccount, useOkto } from '@okto_web3/react-sdk';
+import { getAccount, useOkto } from '@okto_web3/react-sdk';
 import ProductList from "@/app/components/ProductList";
 import Cart from "@/app/components/Cart";
 import { useRouter } from "next/router";
