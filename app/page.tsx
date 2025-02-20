@@ -11,6 +11,7 @@ export default function Home() {
     const { data: session } = useSession();
     const oktoClient = useOkto();
     const [cartItems, setCartItems] = useState([]);
+    const [popupMessage, setPopupMessage] = useState("");
     const router = useRouter();
 
     //@ts-ignore
@@ -47,6 +48,8 @@ export default function Home() {
         const updatedCartItems = [...cartItems, product];
         setCartItems(updatedCartItems);
         localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+        setPopupMessage(`${product.name} added to cart!`);
+        setTimeout(() => setPopupMessage(""), 3000);
     };
 
     const removeFromCart = (index) => {
@@ -68,6 +71,13 @@ export default function Home() {
                 <GetButton title="Okto Log out" apiFn={handleLogout} />
                 <GetButton title="getAccount" apiFn={getAccount} />
             </div>
+
+            {/* Popup Message */}
+            {popupMessage && (
+                <div className="bg-green-500 text-white p-2 rounded mb-4">
+                    {popupMessage}
+                </div>
+            )}
 
             <ProductList addToCart={addToCart} />
             <button onClick={handleViewCart} className="mt-4 bg-green-500 text-white px-4 py-2">
