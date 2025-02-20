@@ -5,7 +5,6 @@ import { LoginButton } from "@/app/components/LoginButton";
 import GetButton from "@/app/components/GetButton";
 import { getAccount, useOkto } from '@okto_web3/react-sdk';
 import ProductList from "@/app/components/ProductList";
-import Cart from "@/app/components/Cart";
 import { useRouter } from "next/navigation";
 export default function Home() {
     const { data: session } = useSession();
@@ -69,7 +68,6 @@ export default function Home() {
             <button onClick={handleViewCart} className="mt-4 bg-green-500 text-white px-4 py-2">
                 View Cart
             </button>
-            <Cart cartItems={cartItems} removeFromCart={removeFromCart} />
         </main>
     );
 }
