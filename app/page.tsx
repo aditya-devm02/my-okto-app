@@ -38,11 +38,11 @@ export default function Home() {
         }
     }
  
-    useEffect(()=>{
-        if(idToken){
+    useEffect(() => {
+        if (idToken) {
             handleAuthenticate();
         }
-    }, [idToken])
+    }, [idToken]);
 
     const addToCart = (product) => {
         setCartItems([...cartItems, product]);
